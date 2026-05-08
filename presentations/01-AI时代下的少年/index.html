@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI时代下的少年 — 如何选择工作与意义 | 牛马生涯</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --canvas: #010102;
+  --canvas-alt: #080810;
+  --surface-1: #0f1011;
+  --surface-2: #141516;
+  --ink: #f7f8f8;
+  --ink-muted: #d0d6e0;
+  --ink-subtle: #8a8f98;
+  --accent: #5e6ad2;
+  --hairline: #23252a;
+  --hairline-strong: #34343a;
+  --blue: #6b7ff0;
+  --green: #4a9e8e;
+  --orange: #c87a3a;
+  --red: #d45454;
+  --purple: #9b6bbf;
+  --gold: #c49a3a;
+  --cyan: #4a9eb0;
+  --font: "PingFang SC", -apple-system, "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--canvas);
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+/* === Block System === */
+.block {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 32px;
+  position: relative;
+}
+.block--full { min-height: 100vh; }
+.block--alt { background: var(--canvas-alt); }
+.block-content {
+  max-width: 900px;
+  width: 100%;
+}
+.block-content--center { text-align: center; }
+.block-content--narrow { max-width: 640px; }
+/* === Hairline separator === */
+.block--sep::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+/* === Typography === */
+.t-hero {
+  font-size: clamp(44px, 6vw, 76px);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.05;
+  letter-spacing: -2.5px;
+}
+.t-section {
+  font-size: clamp(38px, 5vw, 58px);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+}
+.t-quote {
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+}
+.t-heading {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.4px;
+}
+.t-body { font-size: 18px; color: var(--ink-muted); line-height: 1.55; }
+.t-small { font-size: 15px; color: var(--ink-subtle); }
+.t-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  color: var(--ink-subtle);
+}
+.t-label {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+}
+.t-label--blue { background: rgba(107,127,240,0.08); color: var(--blue); border: 1px solid rgba(107,127,240,0.15); }
+.t-label--green { background: rgba(74,158,142,0.08); color: var(--green); border: 1px solid rgba(74,158,142,0.15); }
+.t-label--orange { background: rgba(200,122,58,0.08); color: var(--orange); border: 1px solid rgba(200,122,58,0.15); }
+/* === Components === */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+.card {
+  background: var(--surface-1);
+  padding: 28px 24px;
+  transition: background 0.3s;
+}
+.card:hover { background: var(--surface-2); }
+.card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.card__num--blue { background: rgba(107,127,240,0.1); color: var(--blue); }
+.card__num--green { background: rgba(74,158,142,0.1); color: var(--green); }
+.card__num--orange { background: rgba(200,122,58,0.1); color: var(--orange); }
+.card h3 { font-size: 20px; font-weight: 500; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.2px; }
+.card p { font-size: 15px; color: var(--ink-subtle); line-height: 1.5; }
+.keywords { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.keywords span {
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--hairline);
+}
+.keywords--blue span { color: var(--blue); border-color: rgba(107,127,240,0.2); }
+.keywords--green span { color: var(--green); border-color: rgba(74,158,142,0.2); }
+.keywords--orange span { color: var(--orange); border-color: rgba(200,122,58,0.2); }
+.point-list {
+  list-style: none;
+  margin: 20px 0;
+}
+.point-list li {
+  padding: 10px 0 10px 24px;
+  position: relative;
+  font-size: 20px;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--hairline);
+  line-height: 1.5;
+}
+.point-list li:last-child { border-bottom: none; }
+.point-list li::before { content: '→'; position: absolute; left: 0; font-weight: 500; color: var(--ink-subtle); }
+.point-list--blue li::before { color: var(--blue); }
+.point-list--green li::before { color: var(--green); }
+.point-list--orange li::before { color: var(--orange); }
+.summary-table {
+  display: grid;
+  grid-template-columns: 100px repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+}
+.summary-cell {
+  padding: 16px 12px;
+  background: var(--canvas);
+  text-align: center;
+  font-size: 15px;
+  color: var(--ink-muted);
+}
+.summary-cell.hdr { background: var(--surface-1); font-weight: 500; color: var(--ink); }
+.summary-cell.lbl { background: var(--surface-1); font-size: 13px; color: var(--ink-subtle); font-weight: 500; }
+/* Hero timeline dots */
+.hero-timeline { display: flex; align-items: center; justify-content: center; gap: 0; margin-top: 40px; }
+.hero-timeline-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid; }
+.hero-timeline-dot:nth-child(1) { border-color: var(--blue); background: rgba(107,127,240,0.2); }
+.hero-timeline-dot:nth-child(3) { border-color: var(--green); background: rgba(74,158,142,0.2); }
+.hero-timeline-dot:nth-child(5) { border-color: var(--orange); background: rgba(200,122,58,0.2); }
+.hero-timeline-line { width: 64px; height: 1px; background: var(--hairline-strong); }
+.geo-grid {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(rgba(94,106,210,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(94,106,210,0.02) 1px, transparent 1px);
+  background-size: 80px 80px; pointer-events: none;
+}
+/* Infographic */
+.infographic { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 24px 0; }
+.person-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.person-active { background: rgba(107,127,240,0.1); border: 1px solid rgba(107,127,240,0.3); }
+.person-removed { background: var(--surface-2); border: 1px solid var(--hairline); opacity: 0.4; }
+.agent-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--surface-2); border: 1px solid rgba(155,107,191,0.3); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+/* === SVG Left-Right Layout === */
+.svg-layout {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 32px;
+  align-items: center;
+  width: 100%;
+}
+.svg-layout--reverse {
+  grid-template-columns: 3fr 2fr;
+}
+.svg-layout__graphic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.svg-layout__graphic svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+.svg-layout__text {
+  text-align: left;
+}
+/* Visual illustrations (fallback for non-layout SVGs) */
+.visual-illust { display: flex; justify-content: center; padding: 24px 0; }
+.visual-illust svg { max-width: 500px; width: 100%; height: auto; }
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s cubic-bezier(0.25,0.1,0.25,1), transform 0.5s cubic-bezier(0.25,0.1,0.25,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+/* Spacing utilities */
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mt-48 { margin-top: 48px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+/* === Scroll Navigation === */
+.scroll-nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+.scroll-nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+.scroll-nav-dot.active {
+  width: 10px;
+  height: 10px;
+  background: rgba(255,255,255,0.8);
+}
+.scroll-nav-dot:hover {
+  background: rgba(255,255,255,0.5);
+}
+.scroll-nav-dot:hover::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: #d0d6e0;
+  background: #0f1011;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #23252a;
+  font-family: var(--font);
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .block { min-height: 60vh; padding: 56px 20px; }
+  .block--full { min-height: 80vh; }
+  .card-grid { grid-template-columns: 1fr; }
+  .summary-table { grid-template-columns: 80px repeat(3, 1fr); font-size: 12px; }
+  .hero-timeline-line { width: 40px; }
+  .t-hero { letter-spacing: -1.5px; }
+  .svg-layout, .svg-layout--reverse { grid-template-columns: 1fr; }
+  .svg-layout__text { text-align: center; }
+  .svg-layout__graphic svg { max-width: 280px; }
+  .scroll-nav { display: none; }
+}
+@media (max-width: 480px) {
+  .block { padding: 40px 16px; }
+  .summary-cell { padding: 10px 6px; font-size: 11px; }
+}
+/* Animations */
+@keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes neural-dash { 0% { stroke-dashoffset: 200; } 100% { stroke-dashoffset: 0; } }
+@keyframes drift-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes glow-pulse { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.75; } }
+@keyframes twinkle { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.9; } }
+@keyframes door-light { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+footer { text-align: center; padding: 48px 24px; border-top: 1px solid var(--hairline); color: var(--ink-subtle); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- Scroll Navigation -->
+<nav class="scroll-nav" id="scrollNav">
+  <button class="scroll-nav-dot" data-target="sec-hero" data-label="开篇"></button>
+  <button class="scroll-nav-dot" data-target="sec-outline" data-label="目录"></button>
+  <button class="scroll-nav-dot" data-target="sec-part1" data-label="三大阶段"></button>
+  <button class="scroll-nav-dot" data-target="sec-stage1" data-label="存活期"></button>
+  <button class="scroll-nav-dot" data-target="sec-stage2" data-label="进阶期"></button>
+  <button class="scroll-nav-dot" data-target="sec-stage3" data-label="定义期"></button>
+  <button class="scroll-nav-dot" data-target="sec-part2" data-label="三层模型"></button>
+  <button class="scroll-nav-dot" data-target="sec-layer1" data-label="生存"></button>
+  <button class="scroll-nav-dot" data-target="sec-layer2" data-label="生活"></button>
+  <button class="scroll-nav-dot" data-target="sec-layer3" data-label="生命"></button>
+  <button class="scroll-nav-dot" data-target="sec-part3" data-label="AI机会"></button>
+  <button class="scroll-nav-dot" data-target="sec-opportunity" data-label="时代"></button>
+  <button class="scroll-nav-dot" data-target="sec-advice" data-label="建议"></button>
+  <button class="scroll-nav-dot" data-target="sec-ending" data-label="结语"></button>
+</nav>
+
+<!-- Block 1: Hero -->
+<section class="block block--full block--sep" id="sec-hero">
+  <div class="geo-grid"></div>
+  <div class="block-content block-content--center" style="position:relative;z-index:2;">
+    <div class="t-badge reveal">牛马生涯 NiuMaCareer · 第一期 Presentation Show</div>
+    <h1 class="t-hero reveal reveal-delay-1" style="margin-top:32px;">AI时代下的少年<br>如何选择工作与意义</h1>
+    <p class="reveal reveal-delay-2" style="font-size:20px;color:var(--ink-subtle);margin-top:24px;">2026年5月9日</p>
+    <div class="hero-timeline reveal reveal-delay-3">
+      <div class="hero-timeline-dot"></div>
+      <div class="hero-timeline-line"></div>
+      <div class="hero-timeline-dot"></div>
+      <div class="hero-timeline-line"></div>
+      <div class="hero-timeline-dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 2: Outline -->
+<section class="block block--alt block--sep" id="sec-outline">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal" style="margin-bottom:8px;">今天的分享框架</h2>
+    <p class="t-small reveal" style="margin-bottom:36px;">三个维度，从认知到实践</p>
+    <div class="card-grid">
+      <div class="card reveal reveal-delay-1">
+        <div class="card__num card__num--blue">1</div>
+        <h3>工科毕业生的3大工作阶段</h3>
+        <p>1年·5年·10年的核心矛盾</p>
+        <div class="keywords keywords--blue"><span>存活期</span><span>进阶期</span><span>定义期</span></div>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="card__num card__num--green">2</div>
+        <h3>生存 · 生活 · 生命</h3>
+        <p>外部循环与内部循环的象限</p>
+        <div class="keywords keywords--green"><span>海绵形态</span><span>选择权</span><span>向内求</span></div>
+      </div>
+      <div class="card reveal reveal-delay-3">
+        <div class="card__num card__num--orange">3</div>
+        <h3>AI 时代的机会与行动</h3>
+        <p>回归落地的可执行方向</p>
+        <div class="keywords keywords--orange"><span>窗口期</span><span>AI协作</span><span>动手实践</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 3: Part 1 Title -->
+<section class="block block--full" id="sec-part1">
+  <div class="block-content block-content--center">
+    <span class="t-label t-label--blue reveal">PART 1</span>
+    <h2 class="t-section reveal reveal-delay-1" style="margin-top:24px;">工科毕业生的<br>3大工作阶段</h2>
+    <p class="t-small reveal reveal-delay-2" style="margin-top:16px;">时间轴上的三个核心矛盾</p>
+    <div class="visual-illust reveal reveal-delay-3">
+      <svg viewBox="0 0 600 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="tl-grad" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6b7ff0" stop-opacity="0.1"/><stop offset="20%" stop-color="#6b7ff0" stop-opacity="0.6"/><stop offset="50%" stop-color="#4a9e8e" stop-opacity="0.6"/><stop offset="80%" stop-color="#c87a3a" stop-opacity="0.6"/><stop offset="100%" stop-color="#c87a3a" stop-opacity="0.1"/></linearGradient></defs>
+        <line x1="60" y1="60" x2="540" y2="60" stroke="url(#tl-grad)" stroke-width="1"/>
+        <line x1="60" y1="60" x2="540" y2="60" stroke="url(#tl-grad)" stroke-width="1" stroke-opacity="0.4" style="animation: breathe 4s ease-in-out infinite;"/>
+        <circle cx="150" cy="60" r="5" fill="none" stroke="#6b7ff0" stroke-width="1.5" opacity="0.8"/><circle cx="150" cy="60" r="2" fill="#6b7ff0" opacity="0.6"/>
+        <circle cx="300" cy="60" r="5" fill="none" stroke="#4a9e8e" stroke-width="1.5" opacity="0.8"/><circle cx="300" cy="60" r="2" fill="#4a9e8e" opacity="0.6"/>
+        <circle cx="450" cy="60" r="5" fill="none" stroke="#c87a3a" stroke-width="1.5" opacity="0.8"/><circle cx="450" cy="60" r="2" fill="#c87a3a" opacity="0.6"/>
+        <text x="150" y="90" text-anchor="middle" fill="#8a8f98" font-size="11" font-family="sans-serif">0-2年</text>
+        <text x="300" y="90" text-anchor="middle" fill="#8a8f98" font-size="11" font-family="sans-serif">3-5年</text>
+        <text x="450" y="90" text-anchor="middle" fill="#8a8f98" font-size="11" font-family="sans-serif">6-10年</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Block 4: Opening + 3 Stages Overview -->
+<section class="block block--alt block--sep">
+  <div class="block-content block-content--center">
+    <p class="t-body reveal" style="color:var(--ink);font-size:22px;margin-bottom:36px;line-height:1.5;">"毕业后第一年最重要的事是什么？<br>不是选对公司——是<strong style="color:var(--blue)">学会被骂之后还能继续干。</strong>"</p>
+    <div class="card-grid">
+      <div class="card reveal reveal-delay-1" style="text-align:center;">
+        <p style="color:var(--blue);font-size:13px;font-weight:500;letter-spacing:0.4px;">第1阶段（0-2年）</p>
+        <h3 style="font-size:26px;margin-top:8px;">能力不足</h3>
+        <p style="margin-top:8px;font-size:16px;">想干好，但干不好</p>
+      </div>
+      <div class="card reveal reveal-delay-2" style="text-align:center;">
+        <p style="color:var(--purple);font-size:13px;font-weight:500;letter-spacing:0.4px;">第2阶段（3-5年）</p>
+        <h3 style="font-size:26px;margin-top:8px;">方向迷茫</h3>
+        <p style="margin-top:8px;font-size:16px;">能干好了，不知往哪干</p>
+      </div>
+      <div class="card reveal reveal-delay-3" style="text-align:center;">
+        <p style="color:var(--gold);font-size:13px;font-weight:500;letter-spacing:0.4px;">第3阶段（6-10年）</p>
+        <h3 style="font-size:26px;margin-top:8px;">意义缺失</h3>
+        <p style="margin-top:8px;font-size:16px;">什么都行了，不知为何要干</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 5: Stage 1 - 存活期 (左图右文) -->
+<section class="block block--sep" id="sec-stage1">
+  <div class="block-content">
+    <span class="t-label t-label--blue reveal">STAGE 01 · 存活期（0-2年）</span>
+    <div class="svg-layout reveal mt-24">
+      <div class="svg-layout__graphic">
+        <svg viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="150" x2="100" y2="150" stroke="#6b7ff0" stroke-width="1.2" opacity="0.4"/>
+          <line x1="100" y1="150" x2="100" y2="120" stroke="#6b7ff0" stroke-width="1.2" opacity="0.5"/>
+          <line x1="100" y1="120" x2="160" y2="120" stroke="#6b7ff0" stroke-width="1.2" opacity="0.5"/>
+          <line x1="160" y1="120" x2="160" y2="90" stroke="#6b7ff0" stroke-width="1.2" opacity="0.6"/>
+          <line x1="160" y1="90" x2="220" y2="90" stroke="#6b7ff0" stroke-width="1.2" opacity="0.6"/>
+          <line x1="220" y1="90" x2="220" y2="55" stroke="#6b7ff0" stroke-width="1.2" opacity="0.7"/>
+          <line x1="220" y1="55" x2="275" y2="55" stroke="#6b7ff0" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="275" cy="55" r="5" fill="#6b7ff0" opacity="0.9" style="animation: breathe 3s ease-in-out infinite;"/>
+          <circle cx="65" cy="148" r="3" fill="none" stroke="#6b7ff0" stroke-width="1" opacity="0.6" style="animation: drift-up 4s ease-in-out infinite;"/>
+        </svg>
+      </div>
+      <div class="svg-layout__text">
+        <p class="t-quote" style="color:var(--blue);">"如果有捷径，<br>那就是——干。"</p>
+        <ul class="point-list point-list--blue mt-24">
+          <li>别人学一遍，你搞两遍</li>
+          <li>别人8点走，你10点走</li>
+          <li>不比学历，不比智商，搞定手上的活</li>
+        </ul>
+        <p class="t-small mt-16" style="padding:12px 16px;background:var(--surface-1);border-radius:8px;border:1px solid var(--hairline);">✓ 通关标志：同事对你产生信任 —— <strong style="color:var(--blue);">"交给你，放心"</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 6: Stage 2 - 进阶期 (右图左文) -->
+<section class="block block--alt block--sep" id="sec-stage2">
+  <div class="block-content">
+    <span class="t-label reveal" style="background:rgba(155,107,191,0.08);color:var(--purple);border:1px solid rgba(155,107,191,0.15);">STAGE 02 · 进阶期（3-5年）</span>
+    <div class="svg-layout svg-layout--reverse reveal mt-24">
+      <div class="svg-layout__text">
+        <p class="t-quote" style="color:var(--purple);">"从靠谱到<br>能打硬仗"</p>
+        <div class="mt-24" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hairline);border-radius:12px;overflow:hidden;">
+          <div style="background:var(--surface-1);padding:20px;">
+            <p style="color:var(--purple);font-size:14px;font-weight:500;margin-bottom:6px;">技术跃迁</p>
+            <p class="t-small">从 ctrl+c 到设计架构</p>
+          </div>
+          <div style="background:var(--surface-1);padding:20px;">
+            <p style="color:var(--purple);font-size:14px;font-weight:500;margin-bottom:6px;">责任扩大</p>
+            <p class="t-small">带人、跨线、并发执行</p>
+          </div>
+        </div>
+        <p class="t-small mt-16" style="padding:12px 16px;background:var(--surface-1);border-radius:8px;border:1px solid var(--hairline);">✓ 通关标志：独立设计复杂中间件/SDK —— <strong style="color:var(--purple);">"扛过压力，和别人不一样"</strong></p>
+      </div>
+      <div class="svg-layout__graphic">
+        <svg viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 30 120 Q 100 120, 150 80" stroke="#9b6bbf" stroke-width="1.2" opacity="0.6" fill="none"/>
+          <path d="M 150 80 Q 200 50, 280 35" stroke="#9b6bbf" stroke-width="1.2" opacity="0.7" fill="none"/>
+          <path d="M 150 80 Q 200 110, 280 140" stroke="#9b6bbf" stroke-width="1.2" opacity="0.7" fill="none" stroke-dasharray="4 3"/>
+          <circle cx="150" cy="80" r="5" fill="#9b6bbf" opacity="0.8"/>
+          <circle cx="150" cy="80" r="12" fill="none" stroke="#9b6bbf" stroke-width="0.6" opacity="0.4" style="animation: breathe 3.5s ease-in-out infinite;"/>
+          <text x="270" y="28" text-anchor="middle" fill="#8a8f98" font-size="11" font-family="sans-serif">技术深度</text>
+          <text x="270" y="155" text-anchor="middle" fill="#8a8f98" font-size="11" font-family="sans-serif">责任广度</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 7: Stage 3 - 定义期 + AI冲击 (左图右文) -->
+<section class="block block--sep" id="sec-stage3">
+  <div class="block-content">
+    <span class="t-label reveal" style="background:rgba(196,154,58,0.08);color:var(--gold);border:1px solid rgba(196,154,58,0.15);">STAGE 03 · 定义期（6-10年）</span>
+    <div class="svg-layout reveal mt-24">
+      <div class="svg-layout__graphic">
+        <svg viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="45" x2="130" y2="90" stroke="#c49a3a" stroke-width="0.8" opacity="0.4" stroke-dasharray="4 4" style="animation: neural-dash 8s linear infinite;"/>
+          <line x1="50" y1="135" x2="130" y2="90" stroke="#c49a3a" stroke-width="0.8" opacity="0.4" stroke-dasharray="4 4" style="animation: neural-dash 10s linear infinite;"/>
+          <line x1="130" y1="90" x2="210" y2="55" stroke="#c49a3a" stroke-width="0.8" opacity="0.5" stroke-dasharray="4 4" style="animation: neural-dash 7s linear infinite;"/>
+          <line x1="130" y1="90" x2="210" y2="125" stroke="#c49a3a" stroke-width="0.8" opacity="0.5" stroke-dasharray="4 4" style="animation: neural-dash 9s linear infinite;"/>
+          <line x1="210" y1="55" x2="270" y2="90" stroke="#c49a3a" stroke-width="0.8" opacity="0.5" stroke-dasharray="4 4" style="animation: neural-dash 6s linear infinite;"/>
+          <line x1="210" y1="125" x2="270" y2="90" stroke="#c49a3a" stroke-width="0.8" opacity="0.5" stroke-dasharray="4 4" style="animation: neural-dash 8s linear infinite;"/>
+          <circle cx="130" cy="90" r="6" fill="#c49a3a" opacity="0.7"/>
+          <circle cx="270" cy="90" r="6" fill="#c49a3a" opacity="0.8" style="animation: breathe 3s ease-in-out infinite;"/>
+        </svg>
+      </div>
+      <div class="svg-layout__text">
+        <p class="t-quote" style="color:var(--red);">"行业经验正在<br>快速贬值"</p>
+        <div class="infographic mt-24">
+          <div style="display:flex;gap:6px;"><div class="person-icon person-removed">👤</div><div class="person-icon person-removed">👤</div><div class="person-icon person-removed">👤</div><div class="person-icon person-removed">👤</div><div class="person-icon person-active">👤</div></div>
+          <span style="font-size:1.5rem;color:var(--ink-subtle);">→</span>
+          <div style="display:flex;gap:8px;align-items:center;"><div class="person-icon person-active">👤</div><span style="color:var(--ink-subtle);">+</span><div class="agent-icon">🤖</div></div>
+        </div>
+        <p class="t-small mt-12" style="text-align:center;">5人的活 → <strong style="color:var(--blue)">1人</strong> + <strong style="color:var(--purple)">1 Agent</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 8: Part 1 Summary Table -->
+<section class="block block--alt">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal mb-32">三阶段总览</h2>
+    <div class="summary-table reveal">
+      <div class="summary-cell hdr"></div>
+      <div class="summary-cell hdr" style="color:var(--blue);border-top:2px solid var(--blue);">阶段1</div>
+      <div class="summary-cell hdr" style="color:var(--purple);border-top:2px solid var(--purple);">阶段2</div>
+      <div class="summary-cell hdr" style="color:var(--gold);border-top:2px solid var(--gold);">阶段3</div>
+      <div class="summary-cell lbl">核心矛盾</div><div class="summary-cell">能力不足</div><div class="summary-cell">方向迷茫</div><div class="summary-cell">意义缺失</div>
+      <div class="summary-cell lbl">关键词</div><div class="summary-cell">干、死磕</div><div class="summary-cell">设计、责任</div><div class="summary-cell">选择、AI冲击</div>
+      <div class="summary-cell lbl">通关标志</div><div class="summary-cell">"交给你，放心"</div><div class="summary-cell">独立设计系统</div><div class="summary-cell">找到自己节奏</div>
+      <div class="summary-cell lbl">核心能力</div><div class="summary-cell" style="color:var(--blue);font-weight:500;">执行力</div><div class="summary-cell" style="color:var(--purple);font-weight:500;">判断力</div><div class="summary-cell" style="color:var(--gold);font-weight:500;">决策力</div>
+    </div>
+    <p class="t-body reveal mt-32" style="color:var(--ink);text-align:center;font-size:20px;">"先把当下这个阶段的通关标志达成，<br>自然会进入下一关。"</p>
+  </div>
+</section>
+
+<!-- Block 9: Part 2 Title (右图左文) -->
+<section class="block block--full" id="sec-part2">
+  <div class="block-content">
+    <div class="block-content--center">
+      <span class="t-label t-label--green reveal">PART 2</span>
+      <h2 class="t-section reveal reveal-delay-1" style="margin-top:24px;">生存 · 生活 · 生命</h2>
+      <p class="t-small reveal reveal-delay-2" style="margin-top:16px;">从活下来到活出意义</p>
+    </div>
+    <div class="svg-layout svg-layout--reverse reveal reveal-delay-3 mt-32">
+      <div class="svg-layout__text" style="text-align:center;">
+        <p class="t-body" style="color:var(--ink);font-size:20px;">三层递进的人生视角</p>
+        <p class="t-small mt-12">外层：<strong style="color:var(--green);">生存</strong> — 先活下来</p>
+        <p class="t-small mt-12">中层：<strong style="color:var(--green);">生活</strong> — 活得好</p>
+        <p class="t-small mt-12">内核：<strong style="color:var(--cyan);">生命</strong> — 活出意义</p>
+      </div>
+      <div class="svg-layout__graphic">
+        <svg viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="150" cy="120" r="100" stroke="#4a9e8e" stroke-width="2" opacity="0.3"/>
+          <circle cx="150" cy="120" r="66" stroke="#4a9e8e" stroke-width="1.5" opacity="0.5"/>
+          <circle cx="150" cy="120" r="32" stroke="#4a9e8e" stroke-width="1" opacity="0.9" style="animation: breathe 4s ease-in-out infinite;"/>
+          <circle cx="150" cy="120" r="5" fill="#f7f8f8" opacity="0.8"/>
+          <text x="150" y="195" text-anchor="middle" fill="#4a9e8e" font-size="12" font-family="sans-serif" opacity="0.5">生存</text>
+          <text x="150" y="163" text-anchor="middle" fill="#4a9e8e" font-size="12" font-family="sans-serif" opacity="0.7">生活</text>
+          <text x="150" y="108" text-anchor="middle" fill="#f7f8f8" font-size="12" font-family="sans-serif" opacity="0.9">生命</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 10: 2D Model Overview -->
+<section class="block block--alt block--sep">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal mb-32">两个循环体系</h2>
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hairline);border-radius:12px;overflow:hidden;max-width:500px;margin:0 auto;">
+      <div style="background:var(--surface-1);padding:28px;text-align:center;">
+        <p style="color:var(--green);font-size:15px;font-weight:500;margin-bottom:6px;">外部循环</p>
+        <p class="t-small">收入·职级·技能·地位</p>
+      </div>
+      <div style="background:var(--surface-1);padding:28px;text-align:center;">
+        <p style="color:var(--cyan);font-size:15px;font-weight:500;margin-bottom:6px;">内部循环</p>
+        <p class="t-small">认知·成长·情绪·价值观</p>
+      </div>
+    </div>
+    <p class="t-body reveal mt-32" style="text-align:center;color:var(--ink);font-size:20px;">先拼命转外部循环 → 发现有些问题解决不了 → 回头看内部循环</p>
+    <p class="t-small reveal mt-16" style="text-align:center;">三个阶段：<strong style="color:var(--green)">生存</strong> → <strong style="color:var(--green)">生活</strong> → <strong style="color:var(--cyan)">生命</strong></p>
+  </div>
+</section>
+
+<!-- Block 11: Layer 1 - 生存 -->
+<section class="block block--sep" id="sec-layer1">
+  <div class="block-content block-content--center">
+    <span class="t-label t-label--green reveal">LAYER 01</span>
+    <h2 class="t-heading reveal" style="margin-top:16px;">生存 — 海绵形态</h2>
+    <p class="t-quote reveal mt-24" style="color:var(--green);">"打铁自身硬"</p>
+    <ul class="point-list point-list--green reveal mt-24">
+      <li>拼命吸收：技术、经验、规则</li>
+      <li>活下来的速度 = 吸收的速度</li>
+      <li>外部循环全力转，内部循环近乎静止</li>
+    </ul>
+    <p class="t-small reveal mt-24" style="padding:12px 16px;background:var(--surface-1);border-radius:8px;border:1px solid var(--hairline);text-align:center;">终结标志：<strong style="color:var(--green);">你不再恐惧了</strong> — 能力→信任→机会→更强的能力</p>
+  </div>
+</section>
+
+<!-- Block 12: Layer 2 - 生活 -->
+<section class="block block--alt block--sep" id="sec-layer2">
+  <div class="block-content block-content--center">
+    <span class="t-label t-label--green reveal">LAYER 02</span>
+    <h2 class="t-heading reveal" style="margin-top:16px;">生活 — 掌握选择权</h2>
+    <p class="t-quote reveal mt-24" style="color:var(--green);">"你开始有能力去设计自己的生活"</p>
+    <ul class="point-list point-list--green reveal mt-24">
+      <li>可以说"这份工作我不干了"</li>
+      <li>可以说"我想休息半年"</li>
+      <li>可以重新设定生活的优先级</li>
+    </ul>
+    <p class="t-body reveal mt-24" style="text-align:center;color:var(--cyan);font-size:20px;">内部循环开始发出信号：<br>"明明什么都有了，为什么还是焦虑？"</p>
+  </div>
+</section>
+
+<!-- Block 13: Layer 3 - 生命 -->
+<section class="block block--sep" id="sec-layer3">
+  <div class="block-content block-content--center">
+    <span class="t-label t-label--green reveal">LAYER 03</span>
+    <h2 class="t-heading reveal" style="margin-top:16px;">生命 — 追求完整</h2>
+    <p class="t-quote reveal mt-24" style="color:var(--cyan);">"真正的智慧不是'做更多'，<br>而是'在有限中感受到完整'"</p>
+    <div class="reveal mt-24" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hairline);border-radius:12px;overflow:hidden;max-width:500px;margin:0 auto;">
+      <div style="background:var(--surface-1);padding:24px;text-align:center;">
+        <p style="color:var(--green);font-size:14px;font-weight:500;margin-bottom:6px;">意义的获得</p>
+        <p class="t-small">责任感·影响力·认可</p>
+      </div>
+      <div style="background:var(--surface-1);padding:24px;text-align:center;">
+        <p style="color:var(--cyan);font-size:14px;font-weight:500;margin-bottom:6px;">生命的感受</p>
+        <p class="t-small">平静·存在感·热爱驱动</p>
+      </div>
+    </div>
+    <p class="t-small reveal mt-24" style="text-align:center;">从"追求卓越"到"追求完整" — 思维方式的根本转变</p>
+  </div>
+</section>
+
+<!-- Block 14: Part 2 Summary -->
+<section class="block block--alt">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal mb-32" style="color:var(--green);">第二部分 · 总结</h2>
+    <div class="summary-table reveal">
+      <div class="summary-cell hdr"></div>
+      <div class="summary-cell hdr" style="color:var(--green);border-top:2px solid var(--green);">生存</div>
+      <div class="summary-cell hdr" style="color:var(--green);border-top:2px solid var(--green);">生活</div>
+      <div class="summary-cell hdr" style="color:var(--cyan);border-top:2px solid var(--cyan);">生命</div>
+      <div class="summary-cell lbl">核心命题</div><div class="summary-cell">先活下来</div><div class="summary-cell">活得好</div><div class="summary-cell">活出意义</div>
+      <div class="summary-cell lbl">外部循环</div><div class="summary-cell">全力运转</div><div class="summary-cell">趋于稳定</div><div class="summary-cell">重新定义</div>
+      <div class="summary-cell lbl">内部循环</div><div class="summary-cell">待机状态</div><div class="summary-cell">开始觉醒</div><div class="summary-cell">深度运转</div>
+    </div>
+    <p class="t-body reveal mt-32" style="color:var(--green);text-align:center;font-size:20px;">"先活下来" → "活得好" → "活出意义"<br>不同阶段的重心发生迁移</p>
+  </div>
+</section>
+
+<!-- Block 15: Part 3 Title (左图右文) -->
+<section class="block block--full" id="sec-part3">
+  <div class="block-content">
+    <div class="block-content--center">
+      <span class="t-label t-label--orange reveal">PART 3</span>
+      <h2 class="t-section reveal reveal-delay-1" style="margin-top:24px;">AI 时代的<br>机会与行动</h2>
+      <p class="t-small reveal reveal-delay-2" style="margin-top:16px;">回归落地 — 可执行的行动方向</p>
+    </div>
+    <div class="svg-layout reveal reveal-delay-3 mt-32">
+      <div class="svg-layout__graphic">
+        <svg viewBox="0 0 300 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="door-glow" x1="150" y1="20" x2="150" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c87a3a" stop-opacity="0.6"/><stop offset="100%" stop-color="#c87a3a" stop-opacity="0"/></linearGradient></defs>
+          <rect x="100" y="20" width="100" height="170" rx="2" stroke="#c87a3a" stroke-width="1.2" opacity="0.5" fill="none"/>
+          <rect x="110" y="25" width="40" height="160" rx="1" fill="url(#door-glow)" opacity="0.3" style="animation: door-light 5s ease-in-out infinite;"/>
+          <line x1="150" y1="20" x2="150" y2="190" stroke="#c87a3a" stroke-width="0.6" opacity="0.4"/>
+          <circle cx="138" cy="105" r="3" fill="#c87a3a" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="svg-layout__text" style="text-align:center;">
+        <p class="t-body" style="color:var(--ink);font-size:20px;">每一次技术革命都打开一扇门</p>
+        <p class="t-small mt-16">2012 移动互联网 → 2016 云计算 → 2023 大模型 → 2026 AI Agent</p>
+        <p class="t-small mt-12" style="color:var(--orange);">门正在打开——关键是你站在门前</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Block 16: 时代机遇 -->
+<section class="block block--alt block--sep" id="sec-opportunity">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal mb-16">每个时代都有自己的机会</h2>
+    <p class="t-small reveal mb-24">2012 移动互联网 → 2026 AI 时代</p>
+    <p class="t-quote reveal" style="color:var(--orange);">"机会不是凭空出现的——<br>它是你之前所有积累的一次兑现。"</p>
+    <ul class="point-list point-list--orange reveal mt-24">
+      <li>课程项目、比赛、论文 → 积累</li>
+      <li>导师、同学、同事 → 网络</li>
+      <li>对技术方向的理解深度 → 认知资本</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Block 17: 2026 AI 格局 -->
+<section class="block block--sep">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal mb-32">2026年的 AI 格局</h2>
+    <div class="card-grid reveal">
+      <div class="card" style="border-top:2px solid var(--orange);">
+        <p style="color:var(--orange);font-size:14px;font-weight:500;margin-bottom:8px;">AI Coding</p>
+        <p class="t-small">描述需求 → AI生成 → 你 review</p>
+        <p class="t-small mt-12" style="color:var(--ink-muted);">1人产出 = 过去3人</p>
+      </div>
+      <div class="card" style="border-top:2px solid var(--orange);">
+        <p style="color:var(--orange);font-size:14px;font-weight:500;margin-bottom:8px;">AI 协作</p>
+        <p class="t-small">产品出原型、设计出视觉、运营做分析</p>
+        <p class="t-small mt-12" style="color:var(--ink-muted);">工作流已经变了</p>
+      </div>
+      <div class="card" style="border-top:2px solid var(--orange);">
+        <p style="color:var(--orange);font-size:14px;font-weight:500;margin-bottom:8px;">Agent 体系</p>
+        <p class="t-small">给目标 → 自拆解 → 自执行</p>
+        <p class="t-small mt-12" style="color:var(--ink-muted);">人 = 监督者 + 决策者</p>
+      </div>
+    </div>
+    <p class="t-body reveal mt-32" style="text-align:center;color:var(--orange);font-weight:500;font-size:20px;">"重点不在于名字叫什么，而在于你愿不愿意站在变化发生的地方。"</p>
+  </div>
+</section>
+
+<!-- Block 18: 实践建议 -->
+<section class="block block--alt block--sep" id="sec-advice">
+  <div class="block-content block-content--center">
+    <h2 class="t-heading reveal mb-32">给即将毕业同学的3条建议</h2>
+    <div class="card-grid reveal">
+      <div class="card" style="text-align:left;">
+        <p style="color:var(--orange);font-size:28px;font-weight:600;margin-bottom:8px;">01</p>
+        <h3>把握变革机会</h3>
+        <p style="margin-top:8px;font-size:16px;">3-5年内生产方式根本重构<br>你们没有历史包袱 = 最有机会</p>
+      </div>
+      <div class="card" style="text-align:left;">
+        <p style="color:var(--orange);font-size:28px;font-weight:600;margin-bottom:8px;">02</p>
+        <h3>保持开放心态</h3>
+        <p style="margin-top:8px;font-size:16px;">不排斥、不恐惧<br>你是驾驭者，不是被替代者</p>
+      </div>
+      <div class="card" style="text-align:left;">
+        <p style="color:var(--orange);font-size:28px;font-weight:600;margin-bottom:8px;">03</p>
+        <h3>提升简历匹配度</h3>
+        <p style="margin-top:8px;font-size:16px;">用 AI 解决过实际问题？<br>关键不在项目大小，在于：你动手了</p>
+      </div>
+    </div>
+    <p class="t-body reveal mt-32" style="text-align:center;color:var(--orange);font-size:20px;">"在 AI Coding 的时代，空谈理论已经没有任何说服力了。"</p>
+  </div>
+</section>
+
+<!-- Block 19: 行动号召 + 结语 -->
+<section class="block block--full" id="sec-ending">
+  <div class="block-content block-content--center">
+    <p class="t-quote reveal" style="color:var(--orange);">"找一个真实问题，<br>今天回去就用 AI 去解决它。"</p>
+    <div class="reveal mt-48" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--blue);"><p style="color:var(--blue);font-size:14px;font-weight:500;margin-bottom:4px;">Part 1</p><p class="t-small">执行力→判断力→决策力</p></div>
+      <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--green);"><p style="color:var(--green);font-size:14px;font-weight:500;margin-bottom:4px;">Part 2</p><p class="t-small">生存→生活→生命</p></div>
+      <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--orange);"><p style="color:var(--orange);font-size:14px;font-weight:500;margin-bottom:4px;">Part 3</p><p class="t-small">开放·动手·用AI解决问题</p></div>
+    </div>
+    <div class="reveal mt-48">
+      <p class="t-quote" style="color:var(--ink);">"不确定性最大的时候，<br>恰恰是机会最多的时候。"</p>
+    </div>
+    <div class="visual-illust reveal mt-32">
+      <svg viewBox="0 0 600 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="25" r="1.5" fill="#f7f8f8" opacity="0.7" style="animation: twinkle 3s ease-in-out infinite;"/>
+        <circle cx="120" cy="50" r="1" fill="#f7f8f8" opacity="0.5" style="animation: twinkle 4s ease-in-out 0.5s infinite;"/>
+        <circle cx="180" cy="15" r="1.2" fill="#f7f8f8" opacity="0.6" style="animation: twinkle 3.5s ease-in-out 1s infinite;"/>
+        <circle cx="250" cy="40" r="1.3" fill="#f7f8f8" opacity="0.6" style="animation: twinkle 4.5s ease-in-out 0.3s infinite;"/>
+        <circle cx="320" cy="20" r="1" fill="#f7f8f8" opacity="0.5" style="animation: twinkle 3.8s ease-in-out 2s infinite;"/>
+        <circle cx="390" cy="45" r="1.5" fill="#f7f8f8" opacity="0.7" style="animation: twinkle 3.2s ease-in-out 0.8s infinite;"/>
+        <circle cx="460" cy="30" r="0.8" fill="#f7f8f8" opacity="0.4"/>
+        <circle cx="530" cy="50" r="0.8" fill="#f7f8f8" opacity="0.3"/>
+        <line x1="30" y1="68" x2="570" y2="68" stroke="#8a8f98" stroke-width="0.3" opacity="0.2"/>
+      </svg>
+    </div>
+    <p class="t-small reveal mt-24" style="text-align:center;font-size:16px;">去动手，去尝试，去犯错，去修正。<br>这就是工程师精神，也是这个时代最稀缺的品质。</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  牛马生涯 NiuMaCareer · 第一期 Presentation Show | AI时代下的少年 — 如何选择工作与意义
+</footer>
+
+<script>
+(function() {
+  // Reveal animation observer
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  // Scroll Navigation
+  var navDots = document.querySelectorAll('.scroll-nav-dot');
+  var sections = [];
+  navDots.forEach(function(dot) {
+    var targetId = dot.getAttribute('data-target');
+    var section = document.getElementById(targetId);
+    if (section) sections.push({ dot: dot, section: section });
+  });
+
+  // Click handler
+  navDots.forEach(function(dot) {
+    dot.addEventListener('click', function() {
+      var targetId = dot.getAttribute('data-target');
+      var target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Intersection Observer for active state
+  var navObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      var id = entry.target.id;
+      var dot = document.querySelector('.scroll-nav-dot[data-target="' + id + '"]');
+      if (dot) {
+        if (entry.isIntersecting) {
+          navDots.forEach(function(d) { d.classList.remove('active'); });
+          dot.classList.add('active');
+        }
+      }
+    });
+  }, {
+    threshold: 0.3,
+    rootMargin: '-10% 0px -60% 0px'
+  });
+
+  sections.forEach(function(item) {
+    navObserver.observe(item.section);
+  });
+
+  // Set first dot active by default
+  if (navDots.length > 0) navDots[0].classList.add('active');
+})();
+</script>
+</body>
+</html>
