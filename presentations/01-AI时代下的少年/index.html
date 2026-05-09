@@ -764,30 +764,29 @@ footer { text-align: center; padding: 48px 24px; border-top: 1px solid var(--hai
 
 <!-- Block 19: 行动号召 + 结语 -->
 <section class="block block--full" id="sec-ending">
-  <div class="block-content block-content--center">
-    <p class="t-quote reveal" style="color:var(--orange);">"找一个真实问题，<br>今天回去就用 AI 去解决它。"</p>
-    <div class="reveal mt-48" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline);border-radius:12px;overflow:hidden;">
-      <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--blue);"><p style="color:var(--blue);font-size:14px;font-weight:500;margin-bottom:4px;">Part 1</p><p class="t-small">执行力→判断力→决策力</p></div>
-      <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--green);"><p style="color:var(--green);font-size:14px;font-weight:500;margin-bottom:4px;">Part 2</p><p class="t-small">生存→生活→生命</p></div>
-      <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--orange);"><p style="color:var(--orange);font-size:14px;font-weight:500;margin-bottom:4px;">Part 3</p><p class="t-small">开放·动手·用AI解决问题</p></div>
+  <div class="block-content">
+    <div class="block-content--center">
+      <p class="t-quote reveal" style="color:var(--orange);">"找一个真实问题，<br>今天回去就用 AI 去解决它。"</p>
+      <div class="reveal mt-48" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline);border-radius:12px;overflow:hidden;">
+        <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--blue);"><p style="color:var(--blue);font-size:14px;font-weight:500;margin-bottom:4px;">Part 1</p><p class="t-small">执行力→判断力→决策力</p></div>
+        <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--green);"><p style="color:var(--green);font-size:14px;font-weight:500;margin-bottom:4px;">Part 2</p><p class="t-small">生存→生活→生命</p></div>
+        <div style="background:var(--surface-1);padding:20px;text-align:center;border-top:2px solid var(--orange);"><p style="color:var(--orange);font-size:14px;font-weight:500;margin-bottom:4px;">Part 3</p><p class="t-small">开放·动手·用AI解决问题</p></div>
+      </div>
     </div>
-    <div class="reveal mt-48">
-      <p class="t-quote" style="color:var(--ink);">"不确定性最大的时候，<br>恰恰是机会最多的时候。"</p>
+    <!-- 左右结构：左侧文字 + 右侧公众号二维码 -->
+    <div class="svg-layout reveal" style="align-items:center;">
+      <div class="svg-layout__text" style="text-align:left;">
+        <p style="font-size:clamp(22px,3vw,30px);font-weight:600;color:var(--ink);line-height:1.3;letter-spacing:-0.5px;">"不确定性最大的时候，<br>恰恰是机会最多的时候。"</p>
+        <p style="font-size:15px;color:var(--ink-muted);line-height:1.6;margin-top:20px;">去动手，去尝试，去犯错，去修正。<br>这就是工程师精神，也是这个时代最稀缺的品质。</p>
+        <div style="margin-top:20px;padding:14px 18px;background:var(--surface-1);border-radius:10px;border:1px solid var(--hairline);">
+          <p style="color:var(--ink);font-size:15px;font-weight:500;margin-bottom:6px;">📱 关注公众号「土豆他爸爸」</p>
+          <p style="font-size:13px;color:var(--ink-subtle);line-height:1.5;">目标50岁退休，大厂牛马的 生活/工作/教育<br>欢迎关注，不定期更新成长琐碎</p>
+        </div>
+      </div>
+      <div class="svg-layout__graphic" style="display:flex;justify-content:center;align-items:center;">
+        <img src="qrcode.png" alt="公众号二维码" style="width:100%;max-width:280px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+      </div>
     </div>
-    <div class="visual-illust reveal mt-32">
-      <svg viewBox="0 0 600 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="25" r="1.5" fill="#f7f8f8" opacity="0.7" style="animation: twinkle 3s ease-in-out infinite;"/>
-        <circle cx="120" cy="50" r="1" fill="#f7f8f8" opacity="0.5" style="animation: twinkle 4s ease-in-out 0.5s infinite;"/>
-        <circle cx="180" cy="15" r="1.2" fill="#f7f8f8" opacity="0.6" style="animation: twinkle 3.5s ease-in-out 1s infinite;"/>
-        <circle cx="250" cy="40" r="1.3" fill="#f7f8f8" opacity="0.6" style="animation: twinkle 4.5s ease-in-out 0.3s infinite;"/>
-        <circle cx="320" cy="20" r="1" fill="#f7f8f8" opacity="0.5" style="animation: twinkle 3.8s ease-in-out 2s infinite;"/>
-        <circle cx="390" cy="45" r="1.5" fill="#f7f8f8" opacity="0.7" style="animation: twinkle 3.2s ease-in-out 0.8s infinite;"/>
-        <circle cx="460" cy="30" r="0.8" fill="#f7f8f8" opacity="0.4"/>
-        <circle cx="530" cy="50" r="0.8" fill="#f7f8f8" opacity="0.3"/>
-        <line x1="30" y1="68" x2="570" y2="68" stroke="#8a8f98" stroke-width="0.3" opacity="0.2"/>
-      </svg>
-    </div>
-    <p class="t-small reveal mt-24" style="text-align:center;font-size:16px;">去动手，去尝试，去犯错，去修正。<br>这就是工程师精神，也是这个时代最稀缺的品质。</p>
   </div>
 </section>
 
